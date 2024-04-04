@@ -5,11 +5,10 @@
              Title="Analytic Hierarchy Process">
 
     <StackLayout>
-       <ListView x:Name="ListView" RowHeight="90" VerticalOptions="CenterAndExpand">
+       <ListView x:Name="ListView" RowHeight="90" VerticalOptions="CenterAndExpand" ItemTapped="ListView_ItemTapped">
         <ListView.ItemTemplate>
             <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding Descr}"/>
-
+                    <TextCell Text="{Binding Title}" Detail="{Binding Descr}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
