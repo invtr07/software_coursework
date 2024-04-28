@@ -8,38 +8,29 @@ namespace coursework
 {	
 	public partial class DecisionsPage : ContentPage
 	{
-		
-		public DecisionsPage (string parent)
+		private int selectedParentIndex;
+		public DecisionsPage (string criterion, int index)
 		{
 			InitializeComponent ();
+			
+			Title = criterion;
 
-			Title = parent;
+			selectedParentIndex = index + 1;
+		}
 
-            // Find the ParentNode corresponding to the specified parent using foreach loop
-            ParentNode parentNode = null;
-            foreach (var criterion in App.criteria)
-            {
-                if (criterion.Name == parent)
-                {
-                    parentNode = criterion;
-                    break;
-                }
-            }
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			Listview1.ItemsSource = ahpJson[selectedParentIndex].Children;
+			parentDescription.Text = ahpJson[selectedParentIndex].Description;
+		}
 
-            // Set the BindingContext of the page to the found ParentNode
-            BindingContext = parentNode;
-        }
-
-        void ListView_ItemTapped(System.Object sender, Xamarin.Forms.ItemTappedEventArgs e)
-        {
-            if (e.Item != null)
-            {
-                string tappedItem = e.Item.ToString();
-
-                DisplayAlert("Item Tapped", $"You tapped on: {tappedItem}", "OK");
-            }
-
-        }
+		void ListView_ItemTapped(System.Object sender, Xamarin.Forms.ItemTappedEventArgs e)
+		{
+			string tappedItem = (string)e.Item;
+			
+			Navigation.PushAsync(new DecisionDescription(tappedItem), true);
+		}
     }
 }
 

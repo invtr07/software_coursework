@@ -5,15 +5,17 @@
     x:Class="coursework.DecisionsPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding Description}"/>
+            <Label x:Name="parentDescription" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="Center" Margin="20"/>
 
-            <ListView ItemsSource="{Binding Children}" RowHeight="90"  ItemTapped="ListView_ItemTapped" Margin="0,50">
+            <ListView x:Name="Listview1" RowHeight="90"  ItemTapped="ListView_ItemTapped" Margin="0,50">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding}" />
+                        <TextCell Text="{Binding .}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            </ListView> 
+            
+            <Button Text="EVALUATE" BackgroundColor="Orange" FontAttributes="Bold" VerticalOptions="EndAndExpand" Margin="20"/>
 
         </StackLayout>
     </ContentPage.Content>
