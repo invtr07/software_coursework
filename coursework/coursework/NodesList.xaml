@@ -22,7 +22,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             
-            <Button Text="Evaluate"
+            <Button x:Name="EvaluateButton" Text="Evaluate"
                     BackgroundColor="Orange"
                     Clicked="Evaluate_Clicked"
                     HorizontalOptions="Center"/>

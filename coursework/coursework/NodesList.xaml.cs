@@ -18,13 +18,21 @@ namespace coursework
 
             if (node == null)
             {
-                // When no specific node is provided, assume we want the root level
-                this.Title = node.Name;
-                BindingContext = App.HierarchyData.FirstOrDefault(); // Assuming the root is the first entry
+                // Assuming the root is the first entry and there is at least one node in HierarchyData
+                var rootNode = App.HierarchyData.FirstOrDefault();
+                if (rootNode != null)
+                {
+                    this.Title = rootNode.Name;  // Set the title to the root node's name
+                    BindingContext = rootNode;
+                }
+                else
+                {
+                    this.Title = "Root"; // Fallback title if no nodes are available
+                }
             }
             else
             {
-                this.Title = node.Name;
+                this.Title = node.Name;  // Set the title to the current node's name
                 BindingContext = node;
             }
         }
@@ -38,12 +46,12 @@ namespace coursework
             if (selectedNode.Children.Count > 0)
             {
                 // Navigate to a new NodesList page, passing the selected node as the context
-                await Navigation.PushAsync(new NodesList { BindingContext = selectedNode });
+                await Navigation.PushAsync(new NodesList(selectedNode));
             }
             else
             {
-                // Optionally handle selection for nodes without children
-                await DisplayAlert("Info", $"Node: {selectedNode.Name} has no further sub-nodes.", "OK");
+                await Navigation.PushAsync(new NodesList(selectedNode));
+                EvaluateButton.IsVisible = false;
             }
 
             // Deselect the item
