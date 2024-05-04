@@ -10,6 +10,7 @@ namespace coursework
 		public RatingsPage ()
 		{
 			InitializeComponent ();
+			Title = App.HierarchyData[0].Name;
 		}
 	}
 }

@@ -11,15 +11,15 @@ namespace coursework
 {
     public partial class MainPage : ContentPage
     {
-        public DataModels.MenuItems[] menuItems;
+        public MenuItems[] menuItems;
         public MainPage()
         {
             InitializeComponent();
 
             menuItems = new []
             {
-                new DataModels.MenuItems{ Title = "Hierarchy", Descr = "Browse and evaluate" },
-                new DataModels.MenuItems{ Title = "Decision alternatives", Descr = "View rating scores" }
+                new MenuItems{ Title = "Hierarchy", Descr = "Browse and evaluate" },
+                new MenuItems{ Title = "Decision alternatives", Descr = "View rating scores" }
             };
 
             ListView.ItemsSource = menuItems;
@@ -27,17 +27,23 @@ namespace coursework
         
         void ListView_ItemTapped(System.Object sender, Xamarin.Forms.ItemTappedEventArgs e)
         {
-            DataModels.MenuItems item = (DataModels.MenuItems)e.Item;
+            MenuItems item = (MenuItems)e.Item;
 
             if(item.Title == "Hierarchy")
             {
-                Navigation.PushAsync(new CriterionsPage(), true);
+                Navigation.PushAsync(new NodesList(App.HierarchyData.FirstOrDefault()), animated: true);
             }
             else if(item.Title == "Decision alternatives")
             {
                 Navigation.PushAsync(new RatingsPage(), true);
             }
 
+        }
+        
+        public class MenuItems
+        {
+            public string Title { get; set; }
+            public string Descr { get; set; }
         }
         
     }
