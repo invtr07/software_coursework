@@ -31,10 +31,7 @@ namespace coursework
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    if (MainPage != null)
-                    {
-                        await MainPage.DisplayAlert("Error", e.Message, "OK");
-                    }
+                    await MainPage.DisplayAlert("Error", e.Message, "OK");
                 });
             }
         }

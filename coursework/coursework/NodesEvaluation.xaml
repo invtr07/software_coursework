@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="coursework.NodesEvaluation">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Paired Comparisons:"
+            FontAttributes="Bold"
+            HorizontalOptions="CenterAndExpand" FontSize="Large" Margin="15"/>
+            
+            <Label Text="Use switches to indicate pairwise preferences. Select the preference strength from the picker."
+                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="16" Margin="0,0,0,10"/>
+            
+            <ScrollView Margin="5">
+                <StackLayout BindableLayout.ItemsSource="{Binding}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="10" Padding="10" HasShadow="True" BackgroundColor="Transparent" >
+                                <StackLayout Spacing="10">
+                                    <!-- Top Part of the Comparison -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{Binding Child1.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                        <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding Child2.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="End"/>
+                                    </StackLayout>
+
+                                    <!-- Picker for selecting preference -->
+                                    <Picker SelectedIndex="{Binding Preference, Mode=TwoWay}" WidthRequest="150">
+                                        <Picker.Items>
+                                            <x:String>1 - Equal importance</x:String>
+                                            <x:String>2</x:String>
+                                            <x:String>3 - Moderate importance</x:String>
+                                            <x:String>4</x:String>
+                                            <x:String>5 - Strong importance</x:String>
+                                            <x:String>6</x:String>
+                                            <x:String>7 - Very Strong importance</x:String>
+                                            <x:String>8</x:String>
+                                            <x:String>9 - Extreme importance</x:String>
+                                        </Picker.Items>
+                                    </Picker>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+
+            <Button Text="SAVE"
+                    Margin="10"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="#0078D7"
+                    VerticalOptions="EndAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

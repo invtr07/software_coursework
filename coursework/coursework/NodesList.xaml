@@ -5,7 +5,7 @@
              x:Class="coursework.NodesList"
              Title="{Binding Name}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Label Text="{Binding Description}"
                    FontSize="Medium"
                    FontAttributes="Bold"
@@ -14,7 +14,8 @@
             
             <ListView x:Name="ListViewChildren"
                       ItemsSource="{Binding Children}"
-                      ItemSelected="ListViewChildren_ItemSelected">
+                      ItemSelected="ListViewChildren_ItemSelected" RowHeight="80"
+                      VerticalOptions="CenterAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}"/>
@@ -25,7 +26,9 @@
             <Button x:Name="EvaluateButton" Text="Evaluate"
                     BackgroundColor="Orange"
                     Clicked="Evaluate_Clicked"
-                    HorizontalOptions="Center"/>
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    Margin="10"/>
 
         </StackLayout>
     </ContentPage.Content>
