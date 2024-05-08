@@ -47,5 +47,16 @@ namespace coursework
             
             Navigation.PushAsync(new NodesEvaluation(currentNode));
         }
+        
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            
+            if (BindingContext is App.Node node)
+            {
+                ListViewChildren.ItemsSource = null;
+                ListViewChildren.ItemsSource = node.Children;
+            }
+        }
     }
 }

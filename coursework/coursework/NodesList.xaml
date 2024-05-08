@@ -18,7 +18,8 @@
                       VerticalOptions="CenterAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Name}" Detail="{Binding}"/>
+                        <TextCell Text="{Binding Name}" 
+                                  Detail="{Binding LocalPriorities[0], StringFormat='{0:P2}'}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

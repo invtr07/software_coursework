@@ -142,36 +142,68 @@ namespace coursework
             double[] rowTotals = CalculateRowTotals(matrix);
             AssignLocalPriorities(children, rowTotals);
         }
+        private App.Node FindNodeInHierarchy(List<App.Node> nodes, string nodeName)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Name == nodeName)
+                {
+                    return node;
+                }
+    
+                //recursion to find the node in the children in case if node is not found
+                //in the current node to search deeper in the hierarchy
+                var foundNode = FindNodeInHierarchy(node.Children, nodeName);
+                if (foundNode != null)
+                {
+                    return foundNode;
+                }
+            }
+            return null;
+        }
+        private void UpdateAppHierarchyData(App.Node updatedNode)
+        {
+            // Find and update the node in the main hierarchy data
+            var nodeToUpdate = FindNodeInHierarchy(App.HierarchyData, updatedNode.Name);
+            if (nodeToUpdate != null)
+            {
+                nodeToUpdate.LocalPriorities = new List<double>(updatedNode.LocalPriorities);
+            }
+        }
 
         private async void Button_OnClicked(object sender, EventArgs e)
         {
             try
             {
-                List<ChildLocalComparison> comparisons = (List<ChildLocalComparison>)BindingContext;
-                List<App.Node> children = _currentNode.Children;
+                if (_currentNode == null)
+                {
+                    await DisplayAlert("Error", "Current node is undefined.", "OK");
+                    return;
+                }
 
-                
-                if (children == null || !children.Any())
+                if (_currentNode.Children == null || !_currentNode.Children.Any())
                 {
                     await DisplayAlert("Error", "No children nodes available for evaluation.", "OK");
                     return;
                 }
 
-                CalculateLocalPriorities(comparisons, children);
-
-                // Building the message to display
-                StringBuilder messageBuilder = new StringBuilder();
-                foreach (var child in children)
+                var comparisons = BindingContext as List<ChildLocalComparison>;
+                if (comparisons == null)
                 {
-                    messageBuilder.AppendLine($"{child.Name}: {string.Join(", ", child.LocalPriorities.Select(p => p.ToString("N2")))}");
+                    await DisplayAlert("Error", "Comparison data is missing or corrupt.", "OK");
+                    return;
                 }
 
-                // Display the results in an alert
-                await DisplayAlert("Local Priorities", messageBuilder.ToString(), "OK");
+                CalculateLocalPriorities(comparisons, _currentNode.Children);
+
+                // Update the main hierarchy data stored in the App class
+                UpdateAppHierarchyData(_currentNode);
+
+                Navigation.PopAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", ex.Message, "OK");
+                await DisplayAlert("Error", "An error occurred: " + ex.Message, "OK");
             }
         }
         public class ChildLocalComparison
@@ -193,3 +225,16 @@ namespace coursework
         }
     }
 }
+
+
+
+
+// Building the message to display
+// StringBuilder messageBuilder = new StringBuilder();
+// foreach (var child in children)
+// {
+//     messageBuilder.AppendLine($"{child.Name}: {string.Join(", ", child.LocalPriorities.Select(p => p.ToString("N2")))}");
+// }
+
+// Display the results in an alert
+// await DisplayAlert("Local Priorities", messageBuilder.ToString(), "OK");
