@@ -12,9 +12,11 @@ namespace coursework
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NodesEvaluation : ContentPage
     {
+        private App.Node _currentNode;
         public NodesEvaluation(App.Node node = null)
         {
             InitializeComponent();
+            _currentNode = node;
             
             this.Title = node.Name;
             
@@ -57,22 +59,17 @@ namespace coursework
                 int index1 = children.IndexOf(comparison.Child1);
                 int index2 = children.IndexOf(comparison.Child2);
                 
-                if (index1 == -1 || index2 == -1)
-                    {
-                        throw new Exception("Child index not found.");
-                    }
-                
                 double value = comparison.Preference;
 
                 if (comparison.Toggled == true)
                 {
-                    matrix[index1, index2] = value;
-                    matrix[index2, index1] = 1 / value;
+                    matrix[index1, index2] = 1.0 / value;
+                    matrix[index2, index1] = value;
                 }
                 else
                 {
-                    matrix[index1, index2] = 1 / value;
-                    matrix[index2, index1] = value;
+                    matrix[index1, index2] = value;
+                    matrix[index2, index1] = 1.0 / value;
                 }
             }
 
@@ -151,8 +148,9 @@ namespace coursework
             try
             {
                 List<ChildLocalComparison> comparisons = (List<ChildLocalComparison>)BindingContext;
-                List<App.Node> children = App.HierarchyData.FirstOrDefault()?.Children; // Assuming you have a valid hierarchy structure
+                List<App.Node> children = _currentNode.Children;
 
+                
                 if (children == null || !children.Any())
                 {
                     await DisplayAlert("Error", "No children nodes available for evaluation.", "OK");
