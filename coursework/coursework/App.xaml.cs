@@ -86,6 +86,9 @@ namespace coursework
             public string Name { get; set; }
             public string Description { get; set; }
             public List<Node> Children { get; set; } = new List<Node>();
+            
+            public List<double> LocalPriorities { get; set; }
+
         }
 
         public class TempNode
@@ -93,6 +96,7 @@ namespace coursework
             public string Name { get; set; }
             public string Description { get; set; }
             public List<string> Children { get; set; }
+            
         }
     }
 }
