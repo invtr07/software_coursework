@@ -13,13 +13,12 @@
                    Margin="10"/>
             
             <ListView x:Name="ListViewChildren"
-                      ItemsSource="{Binding Children}"
                       ItemSelected="ListViewChildren_ItemSelected" RowHeight="80"
                       VerticalOptions="CenterAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Name}" 
-                                  Detail="{Binding LocalPriorities[0], StringFormat='{0:P2}'}"/>
+                        <TextCell Text="{Binding Child.Name}" 
+                                  Detail="{Binding LocalPriority, StringFormat='{0:P2}'}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

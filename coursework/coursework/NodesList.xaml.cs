@@ -32,13 +32,28 @@ namespace coursework
 
         private async void ListViewChildren_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem == null)
-                return;
+            try
+            {
+                if (e.SelectedItem == null)
+                    return;
 
-            var selectedNode = (App.Node)e.SelectedItem;
+                var viewModel = (ChildViewModel)e.SelectedItem;
+                
+                if (viewModel == null)
+                {
+                    await DisplayAlert("Error", "Unexpected item type", "OK");
+                    return;
+                }
+                
+                var selectedNode = viewModel.Child;
             
-            await Navigation.PushAsync(new NodesList(selectedNode));
-            ((ListView)sender).SelectedItem = null;
+                await Navigation.PushAsync(new NodesList(selectedNode));
+                ((ListView)sender).SelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private void Evaluate_Clicked(object sender, EventArgs e)
@@ -51,12 +66,48 @@ namespace coursework
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            
-            if (BindingContext is App.Node node)
+            try
             {
-                ListViewChildren.ItemsSource = null;
-                ListViewChildren.ItemsSource = node.Children;
+                if (BindingContext is App.Node node)
+                {
+                    // Check if LocalPriorities is not null and has the same count as Children
+                    if (node.LocalPriorities != null && node.LocalPriorities.Count == node.Children.Count)
+                    {
+                        var childViewModels = node.Children
+                            .Select((child, index) => new ChildViewModel
+                            {
+                                Child = child,
+                                LocalPriority = node.LocalPriorities[index]  // Safe to access index
+                            })
+                            .ToList();
+        
+                        ListViewChildren.ItemsSource = childViewModels;
+                    }
+                    else
+                    {
+                        // Handle the scenario where LocalPriorities are not yet available
+                        var childViewModels = node.Children
+                            .Select(child => new ChildViewModel
+                            {
+                                Child = child,
+                                LocalPriority = 0  // Default or placeholder value
+                            })
+                            .ToList();
+        
+                        ListViewChildren.ItemsSource = childViewModels;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+        
+        public class ChildViewModel
+        {
+            public App.Node Child { get; set; }
+            public double LocalPriority { get; set; }
         }
     }
 }

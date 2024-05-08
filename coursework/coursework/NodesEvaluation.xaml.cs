@@ -120,56 +120,33 @@ namespace coursework
 
             return rowTotals;
         }
-        private void AssignLocalPriorities(List<App.Node> children, double[] rowTotals)
+        private void AssignLocalPriorities(App.Node parent, double[] rowTotals)
         {
+            if (parent.LocalPriorities == null)
+                parent.LocalPriorities = new List<double>();
+            
             int n = rowTotals.Length;
             double sumOfRowTotals = rowTotals.Sum(); // Sum all elements for normalization to 1
 
+            parent.LocalPriorities.Clear();
+
             for (int i = 0; i < n; i++)
             {
-                if (children[i].LocalPriorities == null)
-                    children[i].LocalPriorities = new List<double>();
-
-                children[i].LocalPriorities.Clear();
-                children[i].LocalPriorities.Add(rowTotals[i] / sumOfRowTotals); // Normalize each priority
+                
+                parent.LocalPriorities.Add(rowTotals[i] / sumOfRowTotals); // Normalize each priority
+                // parent.LocalPriorities[i]= rowTotals[i] / sumOfRowTotals; // Normalize each priority
             }
         }
 
-        public void CalculateLocalPriorities(List<ChildLocalComparison> comparisons, List<App.Node> children)
+        public void CalculateLocalPriorities(List<ChildLocalComparison> comparisons, App.Node parent)
         {
-            double[,] matrix = GenerateComparisonMatrix(comparisons, children);
+            double[,] matrix = GenerateComparisonMatrix(comparisons, parent.Children);
             matrix = NormalizeMatrix(matrix);
             double[] rowTotals = CalculateRowTotals(matrix);
-            AssignLocalPriorities(children, rowTotals);
+            
+            AssignLocalPriorities(parent, rowTotals);
         }
-        private App.Node FindNodeInHierarchy(List<App.Node> nodes, string nodeName)
-        {
-            foreach (var node in nodes)
-            {
-                if (node.Name == nodeName)
-                {
-                    return node;
-                }
-    
-                //recursion to find the node in the children in case if node is not found
-                //in the current node to search deeper in the hierarchy
-                var foundNode = FindNodeInHierarchy(node.Children, nodeName);
-                if (foundNode != null)
-                {
-                    return foundNode;
-                }
-            }
-            return null;
-        }
-        private void UpdateAppHierarchyData(App.Node updatedNode)
-        {
-            // Find and update the node in the main hierarchy data
-            var nodeToUpdate = FindNodeInHierarchy(App.HierarchyData, updatedNode.Name);
-            if (nodeToUpdate != null)
-            {
-                nodeToUpdate.LocalPriorities = new List<double>(updatedNode.LocalPriorities);
-            }
-        }
+        
 
         private async void Button_OnClicked(object sender, EventArgs e)
         {
@@ -194,12 +171,12 @@ namespace coursework
                     return;
                 }
 
-                CalculateLocalPriorities(comparisons, _currentNode.Children);
+                CalculateLocalPriorities(comparisons, _currentNode);
 
                 // Update the main hierarchy data stored in the App class
-                UpdateAppHierarchyData(_currentNode);
+                // UpdateAppHierarchyData(_currentNode);
 
-                Navigation.PopAsync();
+                await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
@@ -238,3 +215,33 @@ namespace coursework
 
 // Display the results in an alert
 // await DisplayAlert("Local Priorities", messageBuilder.ToString(), "OK");
+
+
+// private App.Node FindNodeInHierarchy(List<App.Node> nodes, string nodeName)
+        // {
+        //     foreach (var node in nodes)
+        //     {
+        //         if (node.Name == nodeName)
+        //         {
+        //             return node;
+        //         }
+        //
+        //         //recursion to find the node in the children in case if node is not found
+        //         //in the current node to search deeper in the hierarchy
+        //         var foundNode = FindNodeInHierarchy(node.Children, nodeName);
+        //         if (foundNode != null)
+        //         {
+        //             return foundNode;
+        //         }
+        //     }
+        //     return null;
+        // }
+        // private void UpdateAppHierarchyData(App.Node updatedNode)
+        // {
+        //     // Find and update the node in the main hierarchy data
+        //     var nodeToUpdate = FindNodeInHierarchy(App.HierarchyData, updatedNode.Name);
+        //     if (nodeToUpdate != null)
+        //     {
+        //         nodeToUpdate.LocalPriorities = new List<double>(updatedNode.LocalPriorities);
+        //     }
+        // }

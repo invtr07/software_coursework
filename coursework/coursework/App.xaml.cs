@@ -86,8 +86,13 @@ namespace coursework
             public string Name { get; set; }
             public string Description { get; set; }
             public List<Node> Children { get; set; } = new List<Node>();
-            
             public List<double> LocalPriorities { get; set; }
+            
+            public Node()
+            {
+                // Initialize the LocalPriorities list to ensure it's never null.
+                LocalPriorities = new List<double>();
+            }
 
         }
 
