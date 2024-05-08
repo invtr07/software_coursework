@@ -5,7 +5,16 @@
     x:Class="coursework.RatingsPage">
     <ContentPage.Content>
         <StackLayout>
+            <Label x:Name="HeaderLabel" FontSize="Medium" HorizontalOptions="Center" />
+            <Label x:Name="EvaluationValidationLabel" FontSize="Medium" HorizontalOptions="Center" />
 
+            <ListView x:Name="DecisionRatingList" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="" Detail="" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
         </StackLayout>
         

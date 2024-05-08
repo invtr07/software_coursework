@@ -110,7 +110,5 @@ namespace coursework
             public App.Node Child { get; set; }
             public double LocalPriority { get; set; }
         }
-        
-        
     }
 }
