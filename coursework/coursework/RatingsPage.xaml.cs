@@ -12,6 +12,7 @@ namespace coursework
 			InitializeComponent ();
 			Title = App.HierarchyData[0].Name;
 		}
+		
 	}
 }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Globalization;
 
 namespace coursework
 {
@@ -90,7 +91,7 @@ namespace coursework
                             .Select(child => new ChildViewModel
                             {
                                 Child = child,
-                                LocalPriority = 0  // Default or placeholder value
+                                LocalPriority = 0 // Default or placeholder value
                             })
                             .ToList();
         
@@ -109,5 +110,7 @@ namespace coursework
             public App.Node Child { get; set; }
             public double LocalPriority { get; set; }
         }
+        
+        
     }
 }
