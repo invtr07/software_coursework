@@ -56,7 +56,7 @@ namespace coursework
             var alternatives = App.HierarchyData.Where(node => node.Children.Count == 0).ToList(); // Assuming leaf nodes are alternatives
             var ratings = alternatives.Select(alt => new DecisionGlobalRating
             {
-                Name = alt.Name,
+                DecisionName = alt.Name,
                 GlobalImportance = 0
             }).ToList();
         
@@ -68,7 +68,7 @@ namespace coursework
             var alternatives = App.HierarchyData.Where(node => node.Children.Count == 0).ToList(); // Assuming leaf nodes are alternatives
             var ratings = alternatives.Select(alt => new DecisionGlobalRating
             {
-                Name = alt.Name,
+                DecisionName = alt.Name,
                 GlobalImportance = CalculateGlobalImportance(alt)
             }).ToList();
         
@@ -111,11 +111,12 @@ namespace coursework
 
         private async void SendEmail(List<DecisionGlobalRating> finalResult)
         {
-            // Prepare the dictionary for the email by converting GlobalImportance values
-            var emailFormattedResults = finalResult.ToDictionary(
-                r => r.Name,
-                r => $"{Math.Round(r.GlobalImportance * 100, 2)}%"  // Format as percentage string
-            );
+            // Prepare the list for the email by converting GlobalImportance values
+            var emailFormattedResults = finalResult.Select(r => new DecisionGlobalRating
+            {
+                DecisionName = r.DecisionName,
+                GlobalImportance = Math.Round(r.GlobalImportance * 100, 2)  // Convert for email
+            }).ToList();
 
             string[] recipients =
             {
@@ -139,7 +140,7 @@ namespace coursework
         
 		public class DecisionGlobalRating
 		{
-			public string Name { get; set; }
+			public string DecisionName { get; set; }
 			public double GlobalImportance { get; set; }
 		}
 
