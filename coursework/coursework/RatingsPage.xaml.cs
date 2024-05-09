@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace coursework
@@ -48,6 +50,7 @@ namespace coursework
                 SubmitBtn.IsVisible = true;
             }
         }
+        
         private void DisplayDecisionsWithoutRatings() 
         {
             var alternatives = App.HierarchyData.Where(node => node.Children.Count == 0).ToList(); // Assuming leaf nodes are alternatives
@@ -105,12 +108,46 @@ namespace coursework
 
             return globalImportance;
         }
+
+        private async void SendEmail(List<DecisionGlobalRating> finalResult)
+        {
+            // Prepare the dictionary for the email by converting GlobalImportance values
+            var emailFormattedResults = finalResult.ToDictionary(
+                r => r.Name,
+                r => $"{Math.Round(r.GlobalImportance * 100, 2)}%"  // Format as percentage string
+            );
+
+            string[] recipients =
+            {
+                "grigory.pishchulov@manchester.ac.uk"
+            };
+            string subject = $"AHP Results for {Title}"; //overall goal in the subject
+            string body = JsonConvert.SerializeObject(emailFormattedResults,
+                Formatting.Indented);
+
+            EmailMessage message;
+            try
+            {
+                message = new EmailMessage(subject, body, recipients);
+                await Email.ComposeAsync(message);
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
         
 		public class DecisionGlobalRating
 		{
 			public string Name { get; set; }
 			public double GlobalImportance { get; set; }
 		}
-	}
+
+        private void SubmitBtn_OnClicked(object sender, EventArgs e)
+        {
+            var result = DecisionRatingList.ItemsSource.Cast<DecisionGlobalRating>().ToList();
+            SendEmail(result);
+        }
+    }
 }
 
