@@ -20,21 +20,21 @@
                                     <!-- Top Part of the Comparison -->
                                     <StackLayout Orientation="Horizontal" Spacing="10">
                                         <Label Text="{Binding Child1.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                                        <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                                        <Label Text="{Binding Child2.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="End"/>
+                                        <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        <Label Text="{Binding Child2.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
                                     </StackLayout>
 
                                     <!-- Picker for selecting preference -->
                                     <Picker SelectedIndex="{Binding Preference, Mode=TwoWay}" WidthRequest="150">
                                         <Picker.Items>
                                             <x:String>1 - Equal importance</x:String>
-                                            <x:String>2</x:String>
+                                            <x:String>2 - Moderate importance</x:String>
                                             <x:String>3 - Moderate importance</x:String>
-                                            <x:String>4</x:String>
+                                            <x:String>4 - Strong importance</x:String>
                                             <x:String>5 - Strong importance</x:String>
-                                            <x:String>6</x:String>
+                                            <x:String>6 - Very Strong importance</x:String>
                                             <x:String>7 - Very Strong importance</x:String>
-                                            <x:String>8</x:String>
+                                            <x:String>8 - Extreme importance</x:String>
                                             <x:String>9 - Extreme importance</x:String>
                                         </Picker.Items>
                                     </Picker>
@@ -48,7 +48,7 @@
             <Button Text="SAVE"
                     Margin="10"
                     HorizontalOptions="FillAndExpand"
-                    BackgroundColor="#0078D7"
+                    BackgroundColor="LightSeaGreen"
                     VerticalOptions="EndAndExpand"
                     Clicked="Button_OnClicked"/>
         </StackLayout>

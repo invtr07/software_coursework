@@ -20,6 +20,7 @@ namespace coursework
             var missingEvaluations = new List<string>();
             foreach (var node in App.HierarchyData)
             {
+                //validate if all nodes have evaluations
                 if (node.Children.Count > 0 && (node.LocalPriorities == null || node.LocalPriorities.Count != node.Children.Count))
                 {
                     missingEvaluations.Add(node.Name);
@@ -34,12 +35,29 @@ namespace coursework
                 // If there are more than one missing evaluations, include the count of additional nodes
                 string additionalNodesText = additionalMissingCount > 0 ? $" and {additionalMissingCount} more nodes" : "";
 
+                HeaderLabel.Text = "Ratings of the alternatives are not available:";
                 EvaluationValidationLabel.Text = $"'{firstMissingNode}'{additionalNodesText} require evaluation.";
+                
+                DisplayDecisionsWithoutRatings();
+                SubmitBtn.IsVisible = false;
             }
             else
             {
                 DisplayRatings();
+                HeaderLabel.Text = "Ratings of the alternatives:";
+                SubmitBtn.IsVisible = true;
             }
+        }
+        private void DisplayDecisionsWithoutRatings() 
+        {
+            var alternatives = App.HierarchyData.Where(node => node.Children.Count == 0).ToList(); // Assuming leaf nodes are alternatives
+            var ratings = alternatives.Select(alt => new DecisionGlobalRating
+            {
+                Name = alt.Name,
+                GlobalImportance = 0
+            }).ToList();
+        
+            DecisionRatingList.ItemsSource = ratings;
         }
         
         private void DisplayRatings()
@@ -56,25 +74,38 @@ namespace coursework
         
         private double CalculateGlobalImportance(App.Node node)
         {
+            // This will recursively calculate the global importance
+            return CalculateGlobalImportanceRecursive(node, 1); // Start with initial importance of 1 (for the root node)
+        }
+
+        private double CalculateGlobalImportanceRecursive(App.Node node, double parentGlobalImportance)
+        {
+            // If node is null, which should not happen unless called incorrectly, return 0
+            if (node == null)
+                return 0;
+
+            // Find all parents of the current node. In a typical tree, a root node will have no parents.
+            var parents = App.HierarchyData.Where(n => n.Children.Contains(node)).ToList();
+
+            // If no parents are found, the node is the root.
+            if (!parents.Any())
+                return 1;  // The global importance of the root is defined as 1.
+
             double globalImportance = 0;
-            var current = node;
-            while (current != null)
+
+            foreach (var parent in parents)
             {
-                var parent = App.HierarchyData.FirstOrDefault(n => n.Children.Contains(current));
-                if (parent != null)
-                {
-                    int index = parent.Children.IndexOf(current);
-                    double localImportance = parent.LocalPriorities[index];
-                    globalImportance += localImportance;
-                    current = parent;
-                }
-                else
-                {
-                    current = null;
-                }
+                int index = parent.Children.IndexOf(node);
+                double localImportance = parent.LocalPriorities[index]; // Local importance of this node with respect to the current parent
+
+                // Recursive call to compute the global importance of the parent
+                double parentGlobal = CalculateGlobalImportanceRecursive(parent, parentGlobalImportance);
+                globalImportance += localImportance * parentGlobal;
             }
+
             return globalImportance;
         }
+        
 		public class DecisionGlobalRating
 		{
 			public string Name { get; set; }

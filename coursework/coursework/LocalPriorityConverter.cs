@@ -4,21 +4,24 @@ using Xamarin.Forms;
 
 namespace coursework
 {
-    //used for displaying empty string if priority is 0 and converts the LocalPriority to percentage if not 0 and displays it in the list
     public class LocalPriorityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double priority && priority == 0)
+            // Check if the value is either null or zero
+            if (value == null || (value is double priority && Math.Abs(priority) < 0.0001)) // Consider values very close to zero as zero
             {
-                return string.Empty; // Return empty string if priority is 0
+                return string.Empty; // Return empty string if priority is null or effectively 0
             }
-            return ((double)value).ToString("P2"); // Otherwise, format as percentage
+
+            // If the value is a valid double and not zero, format it as a percentage
+            return ((double)value).ToString("P2", culture); // Format as percentage with two decimal places, considering culture
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+            // ConvertBack is not implemented because going from string to double isn't required in this use-case
         }
     }
 }

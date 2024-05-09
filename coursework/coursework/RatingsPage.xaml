@@ -2,20 +2,36 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:coursework="clr-namespace:coursework;assembly=coursework"
     x:Class="coursework.RatingsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <coursework:LocalPriorityConverter x:Key="GlobalPriorityConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="HeaderLabel" FontSize="Medium" HorizontalOptions="Center" />
-            <Label x:Name="EvaluationValidationLabel" FontSize="Medium" HorizontalOptions="Center" />
+            <StackLayout Margin="0, 100" VerticalOptions="Start">
+                <Label x:Name="HeaderLabel" FontSize="18" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label x:Name="EvaluationValidationLabel" FontSize="18" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            
 
-            <ListView x:Name="DecisionRatingList" HasUnevenRows="True">
+            <ListView x:Name="DecisionRatingList" RowHeight="80" VerticalOptions="CenterAndExpand" Margin="0,0,0,100">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="" Detail="" />
+                        <TextCell Text="{Binding Name}" Detail="{Binding GlobalImportance, Converter={StaticResource GlobalPriorityConverter}}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
+            <Button Text="SUBMIT"
+                    x:Name="SubmitBtn"
+                    Margin="10"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="LightSkyBlue"
+                    VerticalOptions="EndAndExpand"
+            />
         </StackLayout>
         
     </ContentPage.Content>

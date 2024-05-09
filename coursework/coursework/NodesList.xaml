@@ -13,10 +13,10 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Label Text="{Binding Description}"
-                   FontSize="Medium"
-                   FontAttributes="Bold"
+                   FontSize="18"
                    HorizontalOptions="CenterAndExpand"
-                   Margin="10"/>
+                   HorizontalTextAlignment="Center"
+                   Margin="25"/>
             
             <ListView x:Name="ListViewChildren"
                       ItemSelected="ListViewChildren_ItemSelected" RowHeight="80"
