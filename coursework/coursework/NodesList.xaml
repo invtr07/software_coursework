@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:coursework" 
+             x:Class="coursework.NodesList"
+             Title="{Binding Name}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:LocalPriorityConverter x:Key="LocalPriorityConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Label Text="{Binding Description}"
+                   FontSize="18"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="25"/>
+            
+            <ListView x:Name="ListViewChildren"
+                      ItemSelected="ListViewChildren_ItemSelected" RowHeight="80"
+                      VerticalOptions="CenterAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Child.Name}" 
+                                 Detail="{Binding LocalPriority, Converter={StaticResource LocalPriorityConverter}}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <Button x:Name="EvaluateButton" Text="Evaluate"
+                    BackgroundColor="Orange"
+                    Clicked="Evaluate_Clicked"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    Margin="10"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
