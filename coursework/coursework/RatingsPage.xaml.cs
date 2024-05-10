@@ -70,10 +70,10 @@ namespace coursework
             var ratings = alternatives.Select(alt => new DecisionGlobalRating
             {
                 DecisionName = alt.Name,
-                GlobalImportance = CalculateGlobalImportance(alt)
+                GlobalImportance = CalculateGlobalImportance(alt) //passing the leafnode
             }).ToList();
         
-            DecisionRatingList.ItemsSource = ratings;
+            DecisionRatingList.ItemsSource = ratings; //binding
         }
         
         private double CalculateGlobalImportance(App.Node node)
@@ -105,6 +105,7 @@ namespace coursework
                 // Recursive call to compute the global importance of the parent
                 double parentGlobal = CalculateGlobalImportanceRecursive(parent, parentGlobalImportance);
                 globalImportance += localImportance * parentGlobal;
+                //sum product of localimportance of the child with its all parents
             }
 
             return globalImportance;
@@ -112,11 +113,11 @@ namespace coursework
 
         private async void SendEmail(List<DecisionGlobalRating> finalResult)
         {
-            // Prepare the list for the email by converting GlobalImportance values - used anonymous type 
+            // Prepare the list for the email
             var emailFormattedResults = finalResult.Select(r => new 
             {
                 Decision = r.DecisionName,
-                GlobalPriority = $"{Math.Round(r.GlobalImportance * 100, 2)}%" // Convert for email
+                GlobalPriority = $"{Math.Round(r.GlobalImportance * 100, 2)}%" // Convert for email in anonymous object
             }).ToList();
 
             string[] recipients =

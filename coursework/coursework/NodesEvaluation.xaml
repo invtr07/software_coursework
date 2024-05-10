@@ -19,9 +19,9 @@
                                 <StackLayout Spacing="10">
                                     <!-- Top Part of the Comparison -->
                                     <StackLayout Orientation="Horizontal" Spacing="10">
-                                        <Label Text="{Binding Child1.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="140"/>
+                                        <Label Text="{Binding Child1.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="130"/>
                                         <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                                        <Label Text="{Binding Child2.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="140"/>
+                                        <Label Text="{Binding Child2.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="130"/>
                                     </StackLayout>
 
                                     <!-- Picker for selecting preference -->

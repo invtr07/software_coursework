@@ -13,7 +13,7 @@ namespace coursework
     public partial class NodesEvaluation : ContentPage
     {
         private App.Node _currentNode;
-        public NodesEvaluation(App.Node node = null)
+        public NodesEvaluation(App.Node node)
         {
             InitializeComponent();
             _currentNode = node;
@@ -35,7 +35,7 @@ namespace coursework
                     {
                         Child1 = children[i],
                         Child2 = children[j],
-                        Preference = -1, // Default neutral preference 
+                        Preference = -1, // Default neutral preference index - equal imporatnce 
                         Toggled = false
                     });
                 }
@@ -120,6 +120,7 @@ namespace coursework
 
             return rowTotals;
         }
+
         private void AssignLocalPriorities(App.Node parent, double[] rowTotals)
         {
             if (parent.LocalPriorities == null)
@@ -128,13 +129,13 @@ namespace coursework
             int n = rowTotals.Length;
             double sumOfRowTotals = rowTotals.Sum(); // Sum all elements for normalization to 1
 
-            parent.LocalPriorities.Clear();
+            parent.LocalPriorities.Clear(); //to avoid duplicate entries
 
             for (int i = 0; i < n; i++)
             {
                 
-                parent.LocalPriorities.Add(rowTotals[i] / sumOfRowTotals); // Normalize each priority
-                // parent.LocalPriorities[i]= rowTotals[i] / sumOfRowTotals; // Normalize each priority
+                parent.LocalPriorities.Add(rowTotals[i] / sumOfRowTotals);
+                // Normalize each priority and store in LocalPriorities list of doubles
             }
         }
 
@@ -165,6 +166,7 @@ namespace coursework
                 }
 
                 var comparisons = BindingContext as List<ChildLocalComparison>;
+
                 if (comparisons == null)
                 {
                     await DisplayAlert("Error", "Comparison data is missing or corrupt.", "OK");
@@ -172,9 +174,6 @@ namespace coursework
                 }
 
                 CalculateLocalPriorities(comparisons, _currentNode);
-
-                // Update the main hierarchy data stored in the App class
-                // UpdateAppHierarchyData(_currentNode);
 
                 await Navigation.PopAsync();
             }
@@ -195,7 +194,8 @@ namespace coursework
                 get => _preference;
                 set
                 {
-                    _preference = value + 1; 
+                    _preference = value + 1;
+                    //this is done to use index to represent the pref.value, i.e. index 0 will give pref. 1
                 }
             } 
             public bool Toggled { get; set; } 

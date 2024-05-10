@@ -11,7 +11,7 @@ namespace coursework
             // Check if the value is either null or zero
             if (value == null || (value is double priority && Math.Abs(priority) < 0.0001)) // Consider values very close to zero as zero
             {
-                return string.Empty; // Return empty string if priority is null or effectively 0
+                return string.Empty; // Return empty string if priority is not assigned
             }
 
             // If the value is a valid double and not zero, format it as a percentage

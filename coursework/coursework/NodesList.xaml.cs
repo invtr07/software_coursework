@@ -57,6 +57,7 @@ namespace coursework
             }
         }
 
+        //method for loading children with/without localpriorities
         private async void LoadPriorities()
         {
             try
@@ -109,7 +110,8 @@ namespace coursework
             base.OnAppearing();
             LoadPriorities();
         }
-        
+
+
         public class ChildViewModel
         {
             public App.Node Child { get; set; }
