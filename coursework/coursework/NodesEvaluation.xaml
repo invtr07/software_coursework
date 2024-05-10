@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="coursework.NodesEvaluation">
@@ -6,36 +6,36 @@
         <StackLayout>
             <Label Text="Paired Comparisons:"
             FontAttributes="Bold"
-            HorizontalOptions="CenterAndExpand" FontSize="Large" Margin="15"/>
+            HorizontalOptions="CenterAndExpand" FontSize="Large" Margin="10"/>
             
             <Label Text="Use switches to indicate pairwise preferences. Select the preference strength from the picker."
-                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="16" Margin="0,0,0,10"/>
+                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" FontSize="17" Margin="10"/>
             
-            <ScrollView Margin="5">
+            <ScrollView Margin="10">
                 <StackLayout BindableLayout.ItemsSource="{Binding}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <Frame Margin="10" Padding="10" HasShadow="True" BackgroundColor="Transparent" >
+                            <Frame Margin="10" Padding="5" HasShadow="True" BackgroundColor="Transparent" >
                                 <StackLayout Spacing="10">
                                     <!-- Top Part of the Comparison -->
                                     <StackLayout Orientation="Horizontal" Spacing="10">
-                                        <Label Text="{Binding Child1.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                                        <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                        <Label Text="{Binding Child2.Name}" FontSize="14" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                        <Label Text="{Binding Child1.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="140"/>
+                                        <Switch IsToggled="{Binding Toggled, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding Child2.Name}" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="140"/>
                                     </StackLayout>
 
                                     <!-- Picker for selecting preference -->
-                                    <Picker SelectedIndex="{Binding Preference, Mode=TwoWay}" WidthRequest="150">
+                                    <Picker SelectedIndex="{Binding Preference, Mode=TwoWay}" HorizontalOptions="Center" WidthRequest="220">
                                         <Picker.Items>
-                                            <x:String>1 - Equal importance</x:String>
-                                            <x:String>2 - Moderate importance</x:String>
-                                            <x:String>3 - Moderate importance</x:String>
-                                            <x:String>4 - Strong importance</x:String>
-                                            <x:String>5 - Strong importance</x:String>
-                                            <x:String>6 - Very Strong importance</x:String>
-                                            <x:String>7 - Very Strong importance</x:String>
-                                            <x:String>8 - Extreme importance</x:String>
-                                            <x:String>9 - Extreme importance</x:String>
+                                            <x:String>1 - Equal preference</x:String>
+                                            <x:String>2 - Moderate preference</x:String>
+                                            <x:String>3 - Moderate preference</x:String>
+                                            <x:String>4 - Strong preference</x:String>
+                                            <x:String>5 - Strong preference</x:String>
+                                            <x:String>6 - Very Strong preference</x:String>
+                                            <x:String>7 - Very Strong preference</x:String>
+                                            <x:String>8 - Extreme preference</x:String>
+                                            <x:String>9 - Extreme preference</x:String>
                                         </Picker.Items>
                                     </Picker>
                                 </StackLayout>

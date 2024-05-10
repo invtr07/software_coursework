@@ -57,16 +57,8 @@ namespace coursework
             }
         }
 
-        private void Evaluate_Clicked(object sender, EventArgs e)
+        private async void LoadPriorities()
         {
-            App.Node currentNode = (App.Node)BindingContext;
-            
-            Navigation.PushAsync(new NodesEvaluation(currentNode));
-        }
-        
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
             try
             {
                 if (BindingContext is App.Node node)
@@ -81,7 +73,7 @@ namespace coursework
                                 LocalPriority = node.LocalPriorities[index]  // Safe to access index
                             })
                             .ToList();
-        
+
                         ListViewChildren.ItemsSource = childViewModels;
                     }
                     else
@@ -94,15 +86,28 @@ namespace coursework
                                 LocalPriority = 0 // Default or placeholder value
                             })
                             .ToList();
-        
+
                         ListViewChildren.ItemsSource = childViewModels;
                     }
                 }
             }
             catch (Exception ex)
             {
-                DisplayAlert("Error", ex.Message, "OK");
+                await DisplayAlert("Error", ex.Message, "OK");
             }
+        }
+
+        private void Evaluate_Clicked(object sender, EventArgs e)
+        {
+            App.Node currentNode = (App.Node)BindingContext;
+            
+            Navigation.PushAsync(new NodesEvaluation(currentNode));
+        }
+        
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadPriorities();
         }
         
         public class ChildViewModel

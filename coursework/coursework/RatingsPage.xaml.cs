@@ -32,7 +32,8 @@ namespace coursework
             if (missingEvaluations.Any())
             {
                 string firstMissingNode = missingEvaluations.First();
-                int additionalMissingCount = missingEvaluations.Count - 1; // Exclude the first one from the additional count
+                int additionalMissingCount = missingEvaluations.Count - 1;
+                // Excludes the first one from the additional count
 
                 // If there are more than one missing evaluations, include the count of additional nodes
                 string additionalNodesText = additionalMissingCount > 0 ? $" and {additionalMissingCount} more nodes" : "";
@@ -111,11 +112,11 @@ namespace coursework
 
         private async void SendEmail(List<DecisionGlobalRating> finalResult)
         {
-            // Prepare the list for the email by converting GlobalImportance values
-            var emailFormattedResults = finalResult.Select(r => new DecisionGlobalRating
+            // Prepare the list for the email by converting GlobalImportance values - used anonymous type 
+            var emailFormattedResults = finalResult.Select(r => new 
             {
-                DecisionName = r.DecisionName,
-                GlobalImportance = Math.Round(r.GlobalImportance * 100, 2)  // Convert for email
+                Decision = r.DecisionName,
+                GlobalPriority = $"{Math.Round(r.GlobalImportance * 100, 2)}%" // Convert for email
             }).ToList();
 
             string[] recipients =

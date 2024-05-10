@@ -35,7 +35,7 @@ namespace coursework
                     {
                         Child1 = children[i],
                         Child2 = children[j],
-                        Preference = -1, // Default neutral preference
+                        Preference = -1, // Default neutral preference 
                         Toggled = false
                     });
                 }

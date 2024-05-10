@@ -36,6 +36,7 @@ namespace coursework
             }
         }
 
+
         private async Task<List<Node>> FetchHierarchyAsync()
         {
             using (var client = new HttpClient())
@@ -46,7 +47,7 @@ namespace coursework
 
                 List<Node> nodes = new List<Node>();
 
-                // Creating all nodes 
+                // Creating all nodes but with empty children list of Nodes 
                 foreach (var tempNode in flatNodes)
                 {
                     nodes.Add(new Node
@@ -81,19 +82,13 @@ namespace coursework
                 return nodes; // return the list of nodes
             }
         }
+        //this approach was used to not do .Find by name of the child and iterate through the List Hierarchydata to find the child node
         public class Node
         {
             public string Name { get; set; }
             public string Description { get; set; }
             public List<Node> Children { get; set; } = new List<Node>();
-            public List<double> LocalPriorities { get; set; }
-            
-            public Node()
-            {
-                // Initialize the LocalPriorities list to ensure it's never null.
-                LocalPriorities = new List<double>();
-            }
-
+            public List<double> LocalPriorities { get; set; } = new List<double>();
         }
 
         public class TempNode
@@ -101,7 +96,6 @@ namespace coursework
             public string Name { get; set; }
             public string Description { get; set; }
             public List<string> Children { get; set; }
-            
         }
     }
 }
